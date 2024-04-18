@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'pdfhub/login.css' %}">
+</head>
+<body>
+    <h2>Login</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if form.errors %}
+            <p class="error-message">Please correct the errors below:</p>
+            <ul class="error-list">
+            {% for field, error_list in form.errors.items %}
+                {% for error in error_list %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            </ul>
+        {% endif %}
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>

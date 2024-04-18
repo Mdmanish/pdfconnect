@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'pdfhub/register.css' %}">
+</head>
+<body>
+    <h2>Register</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        <!-- {{ file_form.as_p }} -->
+        {% for label in file_labels %}
+            <label for="file_{{ forloop.counter }}">{{ label }}</label>
+            <input type="file" id="file_{{ forloop.counter }}" name="file_{{ forloop.counter }}" accept=".pdf"><br>
+        {% endfor %}
+        {% if user_form.errors %}
+            <p class="error-message">Please correct the errors below:</p>
+            <ul class="error-list">
+            {% for field, error_list in user_form.errors.items %}
+                {% for error in error_list %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            </ul>
+        {% endif %}
+        <button type="submit">Register</button>
+    </form>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

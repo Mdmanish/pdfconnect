@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Connect</title>
+    <link rel="stylesheet" href="{% static 'pdfhub/home.css' %}">
+</head>
+<body>
+    <h2>Welcome, {{ request.user.username }}</h2>
+    <h3>User Details:</h3>
+    <ul>
+        <li>email: {{ user_profile.email }}</li>
+        <li>mobile: {{ user_profile.mobile }}</li>
+        <li>first_name: {{ user_profile.first_name }}</li>
+        <li>last_name: {{ user_profile.last_name }}</li>
+        <li>address: {{ user_profile.address }}</li>
+        <li>Roll Number: {{ user_profile.roll_number }}</li>
+        <li>Registration Number: {{ user_profile.registration_number }}</li>
+        <li>Class: {{ user_profile.class_name }}</li>
+        <li>School: {{ user_profile.school }}</li>
+        <li>address: {{ user_profile.address }}</li>
+        <li>school_board: {{ user_profile.school_board }}</li>
+        <li>school_address: {{ user_profile.school_address }}</li>
+    </ul>
+    <h3>Uploaded files:</h3>
+    <ul>
+        {% for file in user_files %}
+            <li><a href="{% static 'pdf_files/Trips_Flight_DownloadETicket.pdf' %}">{{ file.file.name }}</a></li>
+        {% endfor %}
+    </ul>
+    <hr />
+    <form method="post" action="{% url 'pdfhub:fetch_answer' %}">
+        {% csrf_token %}
+        <label for="question">Select or Type a question:</label>
+        <select id="question" name="question">
+            <option value="">Select a question...</option>
+            <option value="registration_number">What is my registration number?</option>
+            <option value="class">In which class am I studying?</option>
+            <option value="school_name">What is my school name?</option>
+            <option value="mobile_number">What is my mobile number?</option>
+        </select>
+        <br><br>
+        <label for="custom_question">Or type your question:</label>
+        <input type="text" id="custom_question" name="custom_question">
+        <br>
+        <label for="question">Select a file:</label>
+        <select id="file" name="file">
+            {% for file in user_files %}
+                <option value="{{ file.file.name }}">{{ file.file.name }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
